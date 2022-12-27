@@ -1,50 +1,33 @@
-# ROS2 Video Streamer
+# ros2_video_streamer
 
-A ROS2 python node for streaming video files or stream images in a folder to a topic. 
-
-Used as a camera simulator if you have pre-recorded video you want to stream, or if you have a dataset of video frames as images, that you want to replay.
-
-#### Features:
-- Stream images from folder
-- Stream video from path
-- Supply camera calibration file for camera or images to publish camera_info.
-
-This is a work in progress.
-
-## Install
-
-### Install extra dependencies
-
-#### Ubuntu/Debian
-
-``` bash
-apt update -y
-apt install -y python3-natsort  # Installing natsort (is not in rosdep)
-```
-
-### Install other dependencies and build
-
-``` bash
-rosdep install -i --from-path . -y
-colcon build --symlink-install
-
-source ./install/setup.bash
-```
+> tldr: A ROS2 python node for streaming video files or images to a topic.
 
 ## Usage
 
-Make sure to activate the workspace where `vision_opencv` is first.
+There is a `ros2_video_streamer_node` launch file. Minimally, you need to provide
+a `type` (e.g. video or image) and `path`, which is the full path to the content
+to stream.
 
-#### Run a video file
+```bash
+ros2 launch ros2_video_streamer ros2_video_streamer_node type:=<type> path:=<path>
+```
 
-`ros2 run camera_simulator camera_simulator --type video --path <my-video-path> --loop`
+The content is published on the `~/image/compressed` topic.
 
+## Additional Settings
 
-#### Run a KITTI dataset folder
-If for some reason you do not have a bag file of CameraInfo (camera calibration information) and
-images, what this app can do is simulate this
+There are also the following optional settings that you can pass to the launch file
 
-`ros2 run camera_simulator camera_simulator --type image --path <image-folder-path> --calibration_file <calibration-path>`
+* __node_name__ - Override the default name of the node.
 
-In the data folder you'll find some examples of this, calibration configuration sample file (converted to ROS2 calibration file from 2009_09_08_calib.txt for the left camera (camera 1)) and some images. Start up `image_proc` as you would to rectify
-your images and you should be good to go.
+* __image_topic_name__ - Override default name of the topic to publish images to
+
+* __info_topic_name__ - Override default name of the topic to publish camera info to
+
+* __config_file_name__ - Name of YAML file in the `config` folder. `CameraInfo` messages are published on the `~/camera_info` topic based on the content of the config file. By default, nothing is published.
+
+* __loop__ (_true_ or _false_) - Continously publish the source on loop
+
+* __frame_id__ - Frame id string in the `CameraInfo` messages.
+
+* __start__ (_int_) - Location to start publishing the source.

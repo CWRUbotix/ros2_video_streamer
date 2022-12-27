@@ -2,8 +2,7 @@ from setuptools import setup, find_packages
 import os
 from glob import glob
 
-PACKAGE_NAME = 'camera_simulator'
-SHARE_DIR = os.path.join("share", PACKAGE_NAME)
+PACKAGE_NAME = 'ros2_video_streamer'
 
 setup(
     name=PACKAGE_NAME,
@@ -12,8 +11,8 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + PACKAGE_NAME]),
         ('share/' + PACKAGE_NAME, ['package.xml']),
-        (os.path.join(SHARE_DIR, "launch"), glob(os.path.join("launch", "*.launch.py"))),
-        (os.path.join(SHARE_DIR, "config"), glob(os.path.join("config", "*.yaml"))),
+        (os.path.join('share', PACKAGE_NAME, 'launch'), glob('launch/*.launch.xml')),
+        (os.path.join('share', PACKAGE_NAME, 'config'), glob('config/*.yaml')),
     ],
     py_modules=[],
     zip_safe=True,
@@ -29,7 +28,7 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'camera_simulator = camera_simulator.camera_simulator:main',
+            'ros2_video_streamer_node = ros2_video_streamer.ros2_video_streamer_node:main',
         ],
     },
 )
