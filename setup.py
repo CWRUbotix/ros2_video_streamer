@@ -12,6 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages', ['resource/' + PACKAGE_NAME]),
         ('share/' + PACKAGE_NAME, ['package.xml']),
         (os.path.join('share', PACKAGE_NAME, 'launch'), glob('launch/*.launch.xml')),
+        (os.path.join('share', PACKAGE_NAME, 'launch'), glob('launch/*launch.[pxy][yma]*')),
         (os.path.join('share', PACKAGE_NAME, 'config'), glob('config/*.yaml')),
         (os.path.join('share', PACKAGE_NAME), glob('*.mp4'))
     ],

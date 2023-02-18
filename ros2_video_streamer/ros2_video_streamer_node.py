@@ -19,12 +19,14 @@ import rclpy
 
 from rclpy.node import Node
 from cv_bridge import CvBridge
-from sensor_msgs.msg import CompressedImage, CameraInfo
+from sensor_msgs.msg import Image, CompressedImage, CameraInfo
 
 from ament_index_python.packages import get_package_share_directory
 
+
 class VideoStreamerNode(Node):
-    """Main ROS Camera simulator Node function. Takes input from USB webcam
+    """
+    Main ROS Camera simulator Node function. Takes input from USB webcam
     and publishes a ROS CompressedImage and Image message to topics.
     """
     def __init__(self, node_name: str):
@@ -41,7 +43,7 @@ class VideoStreamerNode(Node):
 
         # Publishers
         self.image_publisher_ = self.create_publisher(
-            CompressedImage,
+            Image,
             self.image_topic_name,
             5)
         self.camera_info_publisher_ = self.create_publisher(
@@ -49,7 +51,6 @@ class VideoStreamerNode(Node):
             self.info_topic_name,
             1)
 
-        # self.path = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], '../../../../share/ros2_video_streamer/', self.path))
         self.path = os.path.join(get_package_share_directory('ros2_video_streamer'), self.path)
         self.get_logger().error(self.path)
 
@@ -59,7 +60,7 @@ class VideoStreamerNode(Node):
             try:
                 self.vc = cv2.VideoCapture(self.path)
                 self.vc.set(cv2.CAP_PROP_POS_MSEC, self.start)
-            except:
+            except EOFError:
                 print("End of file")
             video_fps = self.vc.get(cv2.CAP_PROP_FPS)
         elif self.type == "image":
@@ -76,27 +77,23 @@ class VideoStreamerNode(Node):
     def load_launch_parameters(self):
         """Load the launch ROS parameters
         """
-        self.declare_parameter("config_file_path")
-        self.declare_parameter("image_topic_name")
-        self.declare_parameter("info_topic_name")
-        self.declare_parameter("loop")
-        self.declare_parameter("frame_id")
-        self.declare_parameter("type")
-        self.declare_parameter("path")
-        self.declare_parameter("start")
+        self.declare_parameter("config_file_path", value='')
+        self.declare_parameter("image_topic_name", value='~/image/compressed')
+        self.declare_parameter("info_topic_name", value='~/camera_info')
+        self.declare_parameter("loop", value=True)
+        self.declare_parameter("frame_id", value='')
+        self.declare_parameter("type", value='')
+        self.declare_parameter("path", value='cam1.mp4')
+        self.declare_parameter("start", value=0)
 
         self.config_file_path = self.get_parameter("config_file_path")\
             .get_parameter_value().string_value
-        
-        image_topic_name = self.get_parameter("image_topic_name")\
-            .get_parameter_value().string_value
-        self.image_topic_name = "~/image/compressed" if image_topic_name == "" \
-            else image_topic_name
 
-        info_topic_name = self.get_parameter("info_topic_name")\
+        self.image_topic_name = self.get_parameter("image_topic_name")\
             .get_parameter_value().string_value
-        self.info_topic_name = "~/camera_info" if info_topic_name == "" \
-            else info_topic_name
+
+        self.info_topic_name = self.get_parameter("info_topic_name")\
+            .get_parameter_value().string_value
 
         self.loop = self.get_parameter("loop")\
             .get_parameter_value().bool_value
@@ -111,7 +108,7 @@ class VideoStreamerNode(Node):
 
     def load_config_file(self, file_path: str):
         try:
-            f = open(file_path)
+            f = open(os.path.join(get_package_share_directory('ros2_video_streamer'), 'ros2_video_streamer', 'config', file_path))
             return yaml.safe_load(f)
         except IOError:
             self.get_logger().warning(
@@ -160,7 +157,8 @@ class VideoStreamerNode(Node):
         :param image: cv2 image
         :return: sensor_msgs/Imag
         """
-        img_msg = self.bridge.cv2_to_compressed_imgmsg(image)
+        # img_msg = self.bridge.cv2_to_compressed_imgmsg(image)
+        img_msg = self.bridge.cv2_to_imgmsg(image)
         img_msg.header.stamp = time
         return img_msg
 
