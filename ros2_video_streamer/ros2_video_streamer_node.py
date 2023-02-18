@@ -109,7 +109,7 @@ class VideoStreamerNode(Node):
             path = os.path.join(
                 get_package_share_directory('ros2_video_streamer'),
                 'ros2_video_streamer', 'config', file_path)
-            f = open()
+            f = open(path)
             return yaml.safe_load(f)
         except IOError:
             self.get_logger().warning(
@@ -156,7 +156,7 @@ class VideoStreamerNode(Node):
     def get_image_msg(self, image, time):
         """
         Get image message, takes image as input and returns CvBridge image msg.
-        
+
         :param image: cv2 image
         :return: sensor_msgs/Imag
         """

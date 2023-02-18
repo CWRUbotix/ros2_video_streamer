@@ -9,10 +9,12 @@ setup(
     version='0.1.0',
     packages=find_packages(),
     data_files=[
-        ('share/ament_index/resource_index/packages', ['resource/' + PACKAGE_NAME]),
+        ('share/ament_index/resource_index/packages',
+         ['resource/' + PACKAGE_NAME]),
         ('share/' + PACKAGE_NAME, ['package.xml']),
         (os.path.join('share', PACKAGE_NAME, 'launch'), glob('launch/*.launch.xml')),
-        (os.path.join('share', PACKAGE_NAME, 'launch'), glob('launch/*launch.[pxy][yma]*')),
+        (os.path.join('share', PACKAGE_NAME, 'launch'),
+         glob('launch/*launch.[pxy][yma]*')),
         (os.path.join('share', PACKAGE_NAME, 'config'), glob('config/*.yaml')),
         (os.path.join('share', PACKAGE_NAME), glob('*.mp4'))
     ],
@@ -26,7 +28,7 @@ setup(
     maintainer='Andreas Klintberg',
     keywords=['ROS2'],
     description='Camera simulator - run a recorded video file streamed on a' +
-        'ros topic as if a live webcamera.',
+    'ros topic as if a live webcamera.',
     license='Apache License, Version 2.0',
     tests_require=['pytest'],
     entry_points={
