@@ -13,6 +13,7 @@ setup(
         ('share/' + PACKAGE_NAME, ['package.xml']),
         (os.path.join('share', PACKAGE_NAME, 'launch'), glob('launch/*.launch.xml')),
         (os.path.join('share', PACKAGE_NAME, 'config'), glob('config/*.yaml')),
+        (os.path.join('share', PACKAGE_NAME), glob('*.mp4'))
     ],
     py_modules=[],
     zip_safe=True,

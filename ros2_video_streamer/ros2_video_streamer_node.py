@@ -21,6 +21,7 @@ from rclpy.node import Node
 from cv_bridge import CvBridge
 from sensor_msgs.msg import CompressedImage, CameraInfo
 
+from ament_index_python.packages import get_package_share_directory
 
 class VideoStreamerNode(Node):
     """Main ROS Camera simulator Node function. Takes input from USB webcam
@@ -47,6 +48,10 @@ class VideoStreamerNode(Node):
             CameraInfo,
             self.info_topic_name,
             1)
+
+        # self.path = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], '../../../../share/ros2_video_streamer/', self.path))
+        self.path = os.path.join(get_package_share_directory('ros2_video_streamer'), self.path)
+        self.get_logger().error(self.path)
 
         if self.type == "video":
             if not os.path.isfile(self.path):
