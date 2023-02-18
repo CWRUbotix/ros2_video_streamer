@@ -3,7 +3,7 @@
 > tldr: A ROS2 python node for streaming video files or images to a topic.
 
 ## Usage
-
+ 
 There is a `ros2_video_streamer_node` launch file. Minimally, you need to provide
 a `type` (e.g. video or image) and `path`, which is the full path to the content
 to stream.
