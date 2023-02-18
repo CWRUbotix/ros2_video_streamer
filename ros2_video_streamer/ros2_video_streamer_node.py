@@ -19,16 +19,14 @@ import rclpy
 
 from rclpy.node import Node
 from cv_bridge import CvBridge
-from sensor_msgs.msg import Image, CompressedImage, CameraInfo
+from sensor_msgs.msg import Image, CameraInfo
 
 from ament_index_python.packages import get_package_share_directory
 
 
 class VideoStreamerNode(Node):
-    """
-    Main ROS Camera simulator Node function. Takes input from USB webcam
-    and publishes a ROS CompressedImage and Image message to topics.
-    """
+    """ROS Camera simulator Node; reads video file & pubs ROS Image."""
+
     def __init__(self, node_name: str):
         super().__init__(node_name)
 
@@ -51,7 +49,8 @@ class VideoStreamerNode(Node):
             self.info_topic_name,
             1)
 
-        self.path = os.path.join(get_package_share_directory('ros2_video_streamer'), self.path)
+        self.path = os.path.join(get_package_share_directory(
+            'ros2_video_streamer'), self.path)
         self.get_logger().error(self.path)
 
         if self.type == "video":
@@ -75,8 +74,7 @@ class VideoStreamerNode(Node):
         self.get_logger().info(f"Publishing image at {video_fps} fps")
 
     def load_launch_parameters(self):
-        """Load the launch ROS parameters
-        """
+        """Load the launch ROS parameters."""
         self.declare_parameter("config_file_path", value='')
         self.declare_parameter("image_topic_name", value='~/image/compressed')
         self.declare_parameter("info_topic_name", value='~/camera_info')
@@ -108,7 +106,10 @@ class VideoStreamerNode(Node):
 
     def load_config_file(self, file_path: str):
         try:
-            f = open(os.path.join(get_package_share_directory('ros2_video_streamer'), 'ros2_video_streamer', 'config', file_path))
+            path = os.path.join(
+                get_package_share_directory('ros2_video_streamer'),
+                'ros2_video_streamer', 'config', file_path)
+            f = open()
             return yaml.safe_load(f)
         except IOError:
             self.get_logger().warning(
@@ -122,7 +123,8 @@ class VideoStreamerNode(Node):
         ci.width = config["image_width"]
         ci.height = config["image_height"]
         ci.distortion_model = config["distortion_model"]
-        ci.d = list(float(v) for v in config["distortion_coefficients"]["data"])
+        ci.d = list(float(v)
+                    for v in config["distortion_coefficients"]["data"])
         ci.k = list(float(v) for v in config["camera_matrix"]["data"])
         ci.r = list(float(v) for v in config["rectification_matrix"]["data"])
         ci.p = list(float(v) for v in config["projection_matrix"]["data"])
@@ -152,8 +154,9 @@ class VideoStreamerNode(Node):
         self.image_publisher_.publish(img_msg)
 
     def get_image_msg(self, image, time):
-        """Get image message, takes image as input and returns CvBridge
-        image message
+        """
+        Get image message, takes image as input and returns CvBridge image msg.
+        
         :param image: cv2 image
         :return: sensor_msgs/Imag
         """

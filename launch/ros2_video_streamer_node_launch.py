@@ -3,10 +3,11 @@ from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
 
+
 def generate_launch_description():
     """Asynchronously launches gui node."""
     node_name_arg = DeclareLaunchArgument(
-	    'node_name', default_value='ros2_video_streamer_node'
+        'node_name', default_value='ros2_video_streamer_node'
     )
     image_topic_name_arg = DeclareLaunchArgument(
         'image_topic_name', default_value='~/image/compressed'
@@ -16,7 +17,8 @@ def generate_launch_description():
     )
     config_file_name_arg = DeclareLaunchArgument(
         'config_file_name', default_value='',
-        description='Name of the config file. Default is an empty string, which means no config file. Contents published on `CameraInfo` message.'
+        description='Name of the config file. Defaults to empty string, which' +
+        'means no config file. Contents published on `CameraInfo` message.'
     )
     loop_arg = DeclareLaunchArgument(
         'loop', default_value='true'
