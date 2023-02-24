@@ -24,8 +24,8 @@ setup(
         'setuptools',
         'natsort'
     ],
-    author='Andreas Klintberg',
-    maintainer='Andreas Klintberg',
+    author='Benjamin Poulin',
+    maintainer='Benjamin Poulin',
     keywords=['ROS2'],
     description='Camera simulator - run a recorded video file streamed on a' +
     'ros topic as if a live webcamera.',
