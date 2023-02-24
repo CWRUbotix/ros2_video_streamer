@@ -1,46 +1,71 @@
 import launch
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 
 
 def generate_launch_description():
-    """Asynchronously launches gui node."""
-    node_name_arg = DeclareLaunchArgument(
-        'node_name', default_value='ros2_video_streamer_node'
-    )
-    image_topic_name_arg = DeclareLaunchArgument(
-        'image_topic_name', default_value='~/image/compressed'
-    )
-    info_topic_name_arg = DeclareLaunchArgument(
-        'info_topic_name', default_value='~/camera_info'
-    )
-    config_file_name_arg = DeclareLaunchArgument(
-        'config_file_name', default_value='',
-        description='Name of the config file. Defaults to empty string, which' +
-        'means no config file. Contents published on `CameraInfo` message.'
-    )
-    loop_arg = DeclareLaunchArgument(
-        'loop', default_value='true'
-    )
-    frame_id_arg = DeclareLaunchArgument(
-        'frame_id', default_value='',
-        description='`frame_id` field in the `CameraInfo` topic'
-    )
-    type_arg = DeclareLaunchArgument(
-        'type', description='Type of media source, (e.g. image or video)'
-    )
-    path_arg = DeclareLaunchArgument(
-        'path', default_value='cam1.mp4',
-        description='Absolute path to the media source'
-    )
-    start_arg = DeclareLaunchArgument(
-        'start', default_value='0'
-    )
+    """Launch streamer node with description from launch_setup."""
+    # Using OpaqueFunction lets us access the launch context to evaluate
+    # params early
+    return launch.LaunchDescription([
+        OpaqueFunction(function=launch_setup)
+    ])
+
+def launch_setup(context, *args, **kwargs):
+    """Generate array to be included in launch description."""
+
+    # Declare and early evaluate camera_name argument
+    # Only strictly necessary to set streamer node name & namespace,
+    # but makes other substitutions nicer too
+    camera_name_argument: DeclareLaunchArgument = DeclareLaunchArgument(
+            'camera_name', default_value='simulated_cam',
+            description='Name of the camera, used to autopopulate' +
+            '`image_topic_name`, `info_topic_name`, & `path`. Will find video' +
+            'files named `<camera_name>.mp4`.')
+    camera_name_str = LaunchConfiguration('camera_name').perform(context)
+
+    launch_arguments: list[DeclareLaunchArgument] = [
+        DeclareLaunchArgument(
+            'node_name', default_value='streamer_node'
+        ),
+        DeclareLaunchArgument(
+            'image_topic_name',
+            default_value=f'/{camera_name_str}/image_raw'
+        ),
+        DeclareLaunchArgument(
+            'info_topic_name',
+            default_value=f'/{camera_name_str}/camera_info'
+        ),
+        DeclareLaunchArgument(
+            'config_file_name', default_value='',
+            description='Name of the config file. Defaults to empty string, which' +
+            'means no config file. Contents published on `CameraInfo` message.'
+        ),
+        DeclareLaunchArgument(
+            'loop', default_value='true'
+        ),
+        DeclareLaunchArgument(
+            'frame_id', default_value='',
+            description='`frame_id` field in the `CameraInfo` topic'
+        ),
+        DeclareLaunchArgument(
+            'type', description='Type of media source, (e.g. image or video)'
+        ),
+        DeclareLaunchArgument(
+            'path', default_value=f'{camera_name_str}.mp4',
+            description='Absolute path to the media source'
+        ),
+        DeclareLaunchArgument(
+            'start', default_value='0'
+        )
+    ]
 
     streamer_node: Node = Node(
         package='ros2_video_streamer',
         executable='ros2_video_streamer_node',
+        name='streamer_node',
+        namespace=f'{camera_name_str}',
         parameters=[
             {'config_file_path': LaunchConfiguration('config_file_name')},
             {'image_topic_name': LaunchConfiguration('image_topic_name')},
@@ -53,15 +78,8 @@ def generate_launch_description():
         ]
     )
 
-    return launch.LaunchDescription([
-        node_name_arg,
-        image_topic_name_arg,
-        info_topic_name_arg,
-        config_file_name_arg,
-        loop_arg,
-        frame_id_arg,
-        type_arg,
-        path_arg,
-        start_arg,
+    return [
+        camera_name_argument,
+        *launch_arguments,
         streamer_node
-    ])
+    ]
