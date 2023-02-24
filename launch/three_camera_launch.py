@@ -8,7 +8,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     """
     Launch 3 video streamers with cam names `front_cam`, `manip_cam`, `bottom_cam`.
-    
+
     You'll need `bottom_cam.mp4`, `front_cam.mp4`, & `manip_cam.mp4` in `ros2_video_streamer`.
     """
     front_cam_launcher:  IncludeLaunchDescription = create_cam_launcher('front')
@@ -20,6 +20,7 @@ def generate_launch_description():
         front_cam_launcher,
         bottom_cam_launcher
     ])
+
 
 def create_cam_launcher(camera_name: str) -> IncludeLaunchDescription:
     return IncludeLaunchDescription(

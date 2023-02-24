@@ -12,9 +12,9 @@ def generate_launch_description():
         OpaqueFunction(function=launch_setup)
     ])
 
+
 def launch_setup(context, *args, **kwargs):
     """Generate array to be included in launch description."""
-
     # Declare and early evaluate camera_name argument
     # Only strictly necessary to set streamer node name & namespace,
     # but makes other substitutions nicer too

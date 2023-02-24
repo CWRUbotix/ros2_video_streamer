@@ -59,9 +59,9 @@ class VideoStreamerNode(Node):
     def load_launch_parameters(self):
         """Load the launch ROS parameters."""
         self.declare_parameter('image_topic_name',
-            value='/simulated_cam/image_raw')
+                               value='/simulated_cam/image_raw')
         self.declare_parameter('info_topic_name',
-            value='/simulated_cam/camera_info')
+                               value='/simulated_cam/camera_info')
         self.declare_parameter('path', value='simulated_cam.mp4')
         self.declare_parameter('config_file_path', value='')
         self.declare_parameter('loop', value=True)
@@ -87,7 +87,7 @@ class VideoStreamerNode(Node):
             .get_parameter_value().integer_value
 
         self.path = os.path.join(get_package_share_directory(
-        'ros2_video_streamer'), self.path)
+                                 'ros2_video_streamer'), self.path)
 
     def load_config_file(self, file_path: str):
         """Attempt to load the optional config yaml file."""
