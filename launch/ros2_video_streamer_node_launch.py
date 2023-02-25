@@ -65,7 +65,7 @@ def launch_setup(context, *args, **kwargs):
         package='ros2_video_streamer',
         executable='ros2_video_streamer_node',
         name='streamer_node',
-        namespace=f'{camera_name_str}',
+        namespace=f'simulation/{camera_name_str}',
         parameters=[
             {'config_file_path': LaunchConfiguration('config_file_name')},
             {'image_topic_name': LaunchConfiguration('image_topic_name')},
