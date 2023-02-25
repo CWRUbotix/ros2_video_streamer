@@ -22,7 +22,7 @@ setup(
     zip_safe=True,
     install_requires=[
         'setuptools',
-        'natsort'
+        'opencv-python'
     ],
     author='Benjamin Poulin',
     maintainer='Benjamin Poulin',

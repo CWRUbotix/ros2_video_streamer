@@ -32,7 +32,7 @@ def create_cam_launcher(camera_name: str) -> IncludeLaunchDescription:
             )
         ]),
         # Need to set normally camera_name-derived args manually b/c ROS gets
-        # confused and makes them the same when we launch simulteneously
+        # confused and makes them the same when we launch simultaneously
         launch_arguments=[
             ('type', 'video'),
             ('camera_name', f'{camera_name}_cam'),
