@@ -38,6 +38,6 @@ def create_cam_launcher(camera_name: str) -> IncludeLaunchDescription:
             ('camera_name', f'{camera_name}_cam'),
             ('image_topic_name', f'/{camera_name}_cam/image_raw'),
             ('info_topic_name', f'/{camera_name}_cam/camera_info'),
-            ('path', f'{camera_name}_cam.mp4')
+            ('file_name', f'{camera_name}_cam.mp4')
         ]
     )
