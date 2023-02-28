@@ -38,18 +38,14 @@ class VideoStreamerNode(Node):
             self.info_topic_name,
             1)
 
+        if not os.path.isfile(self.path):
+            raise RuntimeError(f'Invalid video path: {self.path}')
+
         if self.type == 'video':
-            if not os.path.isfile(self.path):
-                raise RuntimeError(f'Invalid video path: {self.path}')
-            try:
-                self.vc: VideoCapture = cv2.VideoCapture(self.path)
-                self.vc.set(cv2.CAP_PROP_POS_MSEC, self.start)
-            except EOFError:
-                print('End of file')
+            self.vc: VideoCapture = cv2.VideoCapture(self.path)
+            self.vc.set(cv2.CAP_PROP_POS_MSEC, self.start)
             video_fps: float = self.vc.get(cv2.CAP_PROP_FPS)
         elif self.type == 'image':
-            if not os.path.isfile(self.path):
-                raise RuntimeError(f'Invalid image path: {self.path}')
             self.image = cv2.imread(self.path)
             video_fps = 10
         else:
@@ -64,7 +60,7 @@ class VideoStreamerNode(Node):
                                value='/simulated_cam/image_raw')
         self.declare_parameter('info_topic_name',
                                value='/simulated_cam/camera_info')
-        self.declare_parameter('path', value='simulated_cam.mp4')
+        self.declare_parameter('file_name', value='simulated_cam.mp4')
         # self.declare_parameter('config_file_path', value='')
         self.declare_parameter('loop', value=True)
         self.declare_parameter('frame_id', value='')
@@ -75,7 +71,7 @@ class VideoStreamerNode(Node):
             .get_parameter_value().string_value
         self.info_topic_name = self.get_parameter('info_topic_name')\
             .get_parameter_value().string_value
-        self.path = self.get_parameter('path')\
+        self.file_name = self.get_parameter('file_name')\
             .get_parameter_value().string_value
         # self.config_file_path = self.get_parameter('config_file_path')\
         #     .get_parameter_value().string_value
@@ -89,7 +85,7 @@ class VideoStreamerNode(Node):
             .get_parameter_value().integer_value
 
         self.path = os.path.join(get_package_share_directory(
-                                 'ros2_video_streamer'), self.path)
+                                 'ros2_video_streamer'), self.file_name)
 
     # def load_config_file(self, file_path: str):
     #     """Attempt to load the optional config yaml file."""
@@ -153,7 +149,8 @@ class VideoStreamerNode(Node):
         :param image: cv2 image
         :return: sensor_msgs/Imag
         """
-        img_msg: Image = self.bridge.cv2_to_imgmsg(image)
+        inverted_image: Mat = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        img_msg: Image = self.bridge.cv2_to_imgmsg(inverted_image)
         img_msg.header.stamp = time
         return img_msg
 

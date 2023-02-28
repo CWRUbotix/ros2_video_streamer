@@ -2,6 +2,8 @@ import launch
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.launch_context import LaunchContext
+from typing import Tuple, Dict, Any
 
 
 def generate_launch_description():
@@ -13,15 +15,16 @@ def generate_launch_description():
     ])
 
 
-def launch_setup(context, *args, **kwargs):
+# TODO remove args and kwargs?
+def launch_setup(context: LaunchContext, *args: Tuple[Any], **kwargs: Dict[Any, Any]):
     """Generate array to be included in launch description."""
     # Declare and early evaluate camera_name argument
     # Only strictly necessary to set streamer node name & namespace,
     # but makes other substitutions nicer too
     camera_name_argument: DeclareLaunchArgument = DeclareLaunchArgument(
             'camera_name', default_value='simulated_cam',
-            description='Name of the camera, used to autopopulate' +
-            '`image_topic_name`, `info_topic_name`, & `path`. Will find video' +
+            description='Name of the camera, used to autogenerate' +
+            '`image_topic_name`, `info_topic_name`, & `file_name`. Will find video' +
             'files named `<camera_name>.mp4`.')
     camera_name_str = LaunchConfiguration('camera_name').perform(context)
 
@@ -53,11 +56,12 @@ def launch_setup(context, *args, **kwargs):
             'type', description='Type of media source, (e.g. image or video)'
         ),
         DeclareLaunchArgument(
-            'path', default_value=f'{camera_name_str}.mp4',
-            description='Absolute path to the media source'
+            'file_name', default_value=f'{camera_name_str}.mp4',
+            description='Name of file'
         ),
         DeclareLaunchArgument(
-            'start', default_value='0'
+            'start', default_value='0',
+            description='Where the Video is starting from default is frame 0'
         )
     ]
 
@@ -73,7 +77,7 @@ def launch_setup(context, *args, **kwargs):
             {'loop': LaunchConfiguration('loop')},
             {'frame_id': LaunchConfiguration('frame_id')},
             {'type': LaunchConfiguration('type')},
-            {'path': LaunchConfiguration('path')},
+            {'file_name': LaunchConfiguration('file_name')},
             {'start': LaunchConfiguration('start')}
         ]
     )
