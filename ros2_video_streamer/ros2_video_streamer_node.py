@@ -42,12 +42,8 @@ class VideoStreamerNode(Node):
             raise RuntimeError(f'Invalid video path: {self.path}')
 
         if self.type == 'video':
-            try:
-                self.vc: VideoCapture = cv2.VideoCapture(self.path)
-                self.vc.set(cv2.CAP_PROP_POS_MSEC, self.start)
-            # TODO do we need this end of file error on initialization?
-            except EOFError:
-                print('End of file')
+            self.vc: VideoCapture = cv2.VideoCapture(self.path)
+            self.vc.set(cv2.CAP_PROP_POS_MSEC, self.start)
             video_fps: float = self.vc.get(cv2.CAP_PROP_FPS)
         elif self.type == 'image':
             self.image = cv2.imread(self.path)

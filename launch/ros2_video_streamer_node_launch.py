@@ -24,7 +24,7 @@ def launch_setup(context: LaunchContext, *args: Tuple[Any], **kwargs: Dict[Any, 
     camera_name_argument: DeclareLaunchArgument = DeclareLaunchArgument(
             'camera_name', default_value='simulated_cam',
             description='Name of the camera, used to autogenerate' +
-            '`image_topic_name`, `info_topic_name`, & `path`. Will find video' +
+            '`image_topic_name`, `info_topic_name`, & `file_name`. Will find video' +
             'files named `<camera_name>.mp4`.')
     camera_name_str = LaunchConfiguration('camera_name').perform(context)
 
