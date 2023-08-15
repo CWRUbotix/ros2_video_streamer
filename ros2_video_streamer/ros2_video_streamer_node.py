@@ -1,14 +1,14 @@
 import os
-import cv2
-from cv2 import VideoCapture, Mat
-# import yaml
-import rclpy
 
-from rclpy.node import Node
-from cv_bridge import CvBridge
-from sensor_msgs.msg import Image, CameraInfo
-from builtin_interfaces.msg import Time
+import cv2
+import rclpy
 from ament_index_python.packages import get_package_share_directory
+from builtin_interfaces.msg import Time
+from cv2 import Mat, VideoCapture
+from cv_bridge import CvBridge
+from rclpy.node import Node
+from rclpy.qos import qos_profile_system_default
+from sensor_msgs.msg import CameraInfo, Image
 
 
 class VideoStreamerNode(Node):
@@ -32,11 +32,13 @@ class VideoStreamerNode(Node):
         self.image_publisher_ = self.create_publisher(
             Image,
             self.image_topic_name,
-            5)
+            qos_profile_system_default
+        )
         self.camera_info_publisher_ = self.create_publisher(
             CameraInfo,
             self.info_topic_name,
-            1)
+            qos_profile_system_default
+        )
 
         if not os.path.isfile(self.path):
             raise RuntimeError(f'Invalid video path: {self.path}')
