@@ -22,7 +22,7 @@ setup(
     zip_safe=True,
     install_requires=[
         'setuptools',
-        'opencv-python'
+        'opencv-python-headless'
     ],
     author='Benjamin Poulin',
     maintainer='Benjamin Poulin',
