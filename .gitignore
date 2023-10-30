@@ -4,6 +4,7 @@
 bin/
 build/
 camera_simulator.egg-info/
+*.egg-info
 dist/
 include/
 install/
