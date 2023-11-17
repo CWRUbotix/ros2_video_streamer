@@ -1,22 +1,24 @@
-import launch
-from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration
+from typing import Any, Dict, Tuple
+
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.launch_context import LaunchContext
-from typing import Tuple, Dict, Any
+from launch.launch_description import LaunchDescription
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 
-def generate_launch_description() -> launch.LaunchDescription:
+def generate_launch_description() -> LaunchDescription:
     """Launch streamer node with description from launch_setup."""
     # Using OpaqueFunction lets us access the launch context to evaluate
     # params early
-    return launch.LaunchDescription([
+    return LaunchDescription([
         OpaqueFunction(function=launch_setup)
     ])
 
 
 # TODO remove args and kwargs?
-def launch_setup(context: LaunchContext, *args: Tuple[Any], **kwargs: Dict[Any, Any]):
+def launch_setup(context: LaunchContext, *args: Tuple[Any],
+                 **kwargs: Dict[Any, Any]) -> LaunchDescription:
     """Generate array to be included in launch description."""
     # Declare and early evaluate camera_name argument
     # Only strictly necessary to set streamer node name & namespace,
@@ -82,8 +84,8 @@ def launch_setup(context: LaunchContext, *args: Tuple[Any], **kwargs: Dict[Any, 
         ]
     )
 
-    return [
+    return LaunchDescription([
         camera_name_argument,
         *launch_arguments,
         streamer_node
-    ]
+    ])

@@ -56,7 +56,7 @@ class VideoStreamerNode(Node):
         self.timer = self.create_timer(1.0/video_fps, self.image_callback)
         self.get_logger().info(f'Publishing image at {video_fps} fps')
 
-    def load_launch_parameters(self):
+    def load_launch_parameters(self) -> None:
         """Load the launch ROS parameters."""
         self.declare_parameter('image_topic_name',
                                value='/simulated_cam/image_raw')
@@ -156,7 +156,7 @@ class VideoStreamerNode(Node):
         return img_msg
 
 
-def main():
+def main() -> None:
     rclpy.init()
     video_streamer_node = VideoStreamerNode()
     rclpy.spin(video_streamer_node)
