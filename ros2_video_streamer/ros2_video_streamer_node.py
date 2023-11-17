@@ -14,7 +14,7 @@ from sensor_msgs.msg import CameraInfo, Image
 class VideoStreamerNode(Node):
     """ROS Camera simulator Node; reads video file & pubs ROS Images."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__('ros2_video_streamer_temp_name',
                          parameter_overrides=[])
 
@@ -116,12 +116,11 @@ class VideoStreamerNode(Node):
     #     ci.p = list(float(v) for v in config['projection_matrix']['data'])
     #     return ci
 
-    def image_callback(self):
+    def image_callback(self) -> None:
         """Process an image or frame of video."""
         if self.type == 'video':
             rval, image = self.vc.read()
-            rval: bool = rval
-            image: Mat = image
+
             if not rval and not self.loop:
                 self.get_logger().info('End of video, closing node...')
                 self.timer.cancel()

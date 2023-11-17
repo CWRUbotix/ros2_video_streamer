@@ -5,7 +5,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
-def generate_launch_description():
+def generate_launch_description() -> launch.launch_description.LaunchDescription:
     """
     Launch 3 video streamers with cam names `front_cam`, `manip_cam`, `bottom_cam`.
 
@@ -15,7 +15,7 @@ def generate_launch_description():
     manip_cam_launcher:  IncludeLaunchDescription = create_cam_launcher('manip')
     bottom_cam_launcher: IncludeLaunchDescription = create_cam_launcher('bottom')
 
-    return launch.LaunchDescription([
+    return launch.launch_description.LaunchDescription([
         manip_cam_launcher,
         front_cam_launcher,
         bottom_cam_launcher

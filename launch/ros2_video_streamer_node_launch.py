@@ -6,7 +6,7 @@ from launch.launch_context import LaunchContext
 from typing import Tuple, Dict, Any
 
 
-def generate_launch_description():
+def generate_launch_description() -> launch.LaunchDescription:
     """Launch streamer node with description from launch_setup."""
     # Using OpaqueFunction lets us access the launch context to evaluate
     # params early
