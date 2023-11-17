@@ -22,7 +22,8 @@ setup(
     zip_safe=True,
     install_requires=[
         'setuptools',
-        'opencv-python-headless'
+        'opencv-python-headless',
+        'mypy >= 1.7'
     ],
     author='Benjamin Poulin',
     maintainer='Benjamin Poulin',
@@ -30,7 +31,7 @@ setup(
     description='Camera simulator - run a recorded video file streamed on a' +
     'ros topic as if a live webcamera.',
     license='Apache License, Version 2.0',
-    tests_require=['pytest'],
+    tests_require=['pytest', 'mypy'],
     entry_points={
         'console_scripts': [
             'ros2_video_streamer_node = ros2_video_streamer.ros2_video_streamer_node:main',
