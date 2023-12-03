@@ -19,7 +19,8 @@ import pytest
 @pytest.mark.flake8
 @pytest.mark.linter
 def test_flake8() -> None:
-    rc, errors = main_with_errors(argv=[])
-    assert rc == 0, \
-        'Found %d code style errors / warnings:\n' % len(errors) + \
+    """Tests flake8 on this module."""
+    error_code, errors = main_with_errors(argv=[])
+    assert error_code == 0, \
+        f'Found {len(errors)} code style errors / warnings:\n' + \
         '\n'.join(errors)
