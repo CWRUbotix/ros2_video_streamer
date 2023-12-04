@@ -1,4 +1,4 @@
-"""setup.py for this module."""
+"""setup.py for the ros2_video_streamer module."""
 import os
 from glob import glob
 
