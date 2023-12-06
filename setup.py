@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'setuptools',
         'opencv-python-headless',
-        'flake8==4.0.1',
+        'flake8==5.0.4',
         'mypy >= 1.7'
     ],
     author='Benjamin Poulin',
