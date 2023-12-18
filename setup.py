@@ -8,7 +8,7 @@ PACKAGE_NAME = 'ros2_video_streamer'
 
 setup(
     name=PACKAGE_NAME,
-    version='0.1.0',
+    version='1.1.0',
     packages=find_packages(),
     data_files=[
         ('share/ament_index/resource_index/packages',

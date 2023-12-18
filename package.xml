@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros2_video_streamer</name>
-  <version>0.1.0</version>
+  <version>1.1.0</version>
   <description>Camera simulator - run a recorded video file streamed on a ros topic as if a live webcamera.</description>
 
   <maintainer email="ankl@kth.se">Benjamin Poulin</maintainer>
