@@ -4,7 +4,8 @@ import cv2
 import rclpy
 from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Time
-from cv2 import Mat, VideoCapture
+from cv2 import VideoCapture
+from cv2.typing import MatLike
 from cv_bridge import CvBridge
 from rclpy.node import Node
 from rclpy.qos import qos_profile_system_default
@@ -143,14 +144,14 @@ class VideoStreamerNode(Node):
 
         self.image_publisher_.publish(img_msg)
 
-    def get_image_msg(self, image: Mat, time: Time) -> Image:
+    def get_image_msg(self, image: MatLike, time: Time) -> Image:
         """
         Convert cv2 image to ROS2 Image with CvBridge cv2 -> image msg.
 
         :param image: cv2 image
         :return: sensor_msgs/Imag
         """
-        inverted_image: Mat = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        inverted_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         img_msg: Image = self.bridge.cv2_to_imgmsg(inverted_image)
         img_msg.header.stamp = time
         return img_msg
