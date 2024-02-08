@@ -1,9 +1,15 @@
 import os
 
 import launch
-from ament_index_python.packages import get_package_share_directory
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ament_index_python.packages import (
+    get_package_share_directory,
+)
+from launch.actions import (
+    IncludeLaunchDescription,
+)
+from launch.launch_description_sources import (
+    PythonLaunchDescriptionSource,
+)
 
 
 def generate_launch_description() -> launch.launch_description.LaunchDescription:
@@ -17,11 +23,17 @@ def generate_launch_description() -> launch.launch_description.LaunchDescription
     bottom_cam_launcher: IncludeLaunchDescription = create_cam_launcher("bottom")
 
     return launch.launch_description.LaunchDescription(
-        [manip_cam_launcher, front_cam_launcher, bottom_cam_launcher]
+        [
+            manip_cam_launcher,
+            front_cam_launcher,
+            bottom_cam_launcher,
+        ]
     )
 
 
-def create_cam_launcher(camera_name: str) -> IncludeLaunchDescription:
+def create_cam_launcher(
+    camera_name: str,
+) -> IncludeLaunchDescription:
     return IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
@@ -36,9 +48,21 @@ def create_cam_launcher(camera_name: str) -> IncludeLaunchDescription:
         # confused and makes them the same when we launch simultaneously
         launch_arguments=[
             ("type", "video"),
-            ("camera_name", f"{camera_name}_cam"),
-            ("image_topic_name", f"/{camera_name}_cam/image_raw"),
-            ("info_topic_name", f"/{camera_name}_cam/camera_info"),
-            ("file_name", f"{camera_name}_cam.mp4"),
+            (
+                "camera_name",
+                f"{camera_name}_cam",
+            ),
+            (
+                "image_topic_name",
+                f"/{camera_name}_cam/image_raw",
+            ),
+            (
+                "info_topic_name",
+                f"/{camera_name}_cam/camera_info",
+            ),
+            (
+                "file_name",
+                f"{camera_name}_cam.mp4",
+            ),
         ],
     )

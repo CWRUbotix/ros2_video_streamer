@@ -1,9 +1,18 @@
 from typing import Any, Dict, Tuple
 
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.launch_context import LaunchContext
-from launch.launch_description import LaunchDescription
-from launch.substitutions import LaunchConfiguration
+from launch.actions import (
+    DeclareLaunchArgument,
+    OpaqueFunction,
+)
+from launch.launch_context import (
+    LaunchContext,
+)
+from launch.launch_description import (
+    LaunchDescription,
+)
+from launch.substitutions import (
+    LaunchConfiguration,
+)
 from launch_ros.actions import Node
 
 
@@ -16,7 +25,9 @@ def generate_launch_description() -> LaunchDescription:
 
 # TODO remove args and kwargs?
 def launch_setup(
-    context: LaunchContext, *args: Tuple[Any], **kwargs: Dict[Any, Any]
+    context: LaunchContext,
+    *args: Tuple[Any],
+    **kwargs: Dict[Any, Any],
 ) -> LaunchDescription:
     """Generate array to be included in launch description."""
     # Declare and early evaluate camera_name argument
@@ -32,12 +43,17 @@ def launch_setup(
     camera_name_str = LaunchConfiguration("camera_name").perform(context)
 
     launch_arguments: list[DeclareLaunchArgument] = [
-        DeclareLaunchArgument("node_name", default_value="streamer_node"),
         DeclareLaunchArgument(
-            "image_topic_name", default_value=f"/{camera_name_str}/image_raw"
+            "node_name",
+            default_value="streamer_node",
         ),
         DeclareLaunchArgument(
-            "info_topic_name", default_value=f"/{camera_name_str}/camera_info"
+            "image_topic_name",
+            default_value=f"/{camera_name_str}/image_raw",
+        ),
+        DeclareLaunchArgument(
+            "info_topic_name",
+            default_value=f"/{camera_name_str}/camera_info",
         ),
         DeclareLaunchArgument(
             "config_file_name",
@@ -52,7 +68,8 @@ def launch_setup(
             description="`frame_id` field in the `CameraInfo` topic",
         ),
         DeclareLaunchArgument(
-            "type", description="Type of media source, (e.g. image or video)"
+            "type",
+            description="Type of media source, (e.g. image or video)",
         ),
         DeclareLaunchArgument(
             "file_name",
@@ -83,4 +100,10 @@ def launch_setup(
         ],
     )
 
-    return LaunchDescription([camera_name_argument, *launch_arguments, streamer_node])
+    return LaunchDescription(
+        [
+            camera_name_argument,
+            *launch_arguments,
+            streamer_node,
+        ]
+    )

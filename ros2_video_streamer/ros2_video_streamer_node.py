@@ -2,21 +2,31 @@ import os
 
 import cv2
 import rclpy
-from ament_index_python.packages import get_package_share_directory
+from ament_index_python.packages import (
+    get_package_share_directory,
+)
 from builtin_interfaces.msg import Time
 from cv2 import VideoCapture
 from cv2.typing import MatLike
 from cv_bridge import CvBridge
 from rclpy.node import Node
-from rclpy.qos import qos_profile_system_default
-from sensor_msgs.msg import CameraInfo, Image
+from rclpy.qos import (
+    qos_profile_system_default,
+)
+from sensor_msgs.msg import (
+    CameraInfo,
+    Image,
+)
 
 
 class VideoStreamerNode(Node):
     """ROS Camera simulator Node; reads video file & pubs ROS Images."""
 
     def __init__(self) -> None:
-        super().__init__("ros2_video_streamer_temp_name", parameter_overrides=[])
+        super().__init__(
+            "ros2_video_streamer_temp_name",
+            parameter_overrides=[],
+        )
 
         self.load_launch_parameters()
 
@@ -30,10 +40,14 @@ class VideoStreamerNode(Node):
 
         # Publishers
         self.image_publisher_ = self.create_publisher(
-            Image, self.image_topic_name, qos_profile_system_default
+            Image,
+            self.image_topic_name,
+            qos_profile_system_default,
         )
         self.camera_info_publisher_ = self.create_publisher(
-            CameraInfo, self.info_topic_name, qos_profile_system_default
+            CameraInfo,
+            self.info_topic_name,
+            qos_profile_system_default,
         )
 
         if not os.path.isfile(self.path):
@@ -41,7 +55,10 @@ class VideoStreamerNode(Node):
 
         if self.type == "video":
             self.vc: VideoCapture = cv2.VideoCapture(self.path)
-            self.vc.set(cv2.CAP_PROP_POS_MSEC, self.start)
+            self.vc.set(
+                cv2.CAP_PROP_POS_MSEC,
+                self.start,
+            )
             video_fps: float = self.vc.get(cv2.CAP_PROP_FPS)
         elif self.type == "image":
             self.image = cv2.imread(self.path)
@@ -49,14 +66,28 @@ class VideoStreamerNode(Node):
         else:
             raise ValueError(f"Unknown type: {self.type}")
 
-        self.timer = self.create_timer(1.0 / video_fps, self.image_callback)
+        self.timer = self.create_timer(
+            1.0 / video_fps,
+            self.image_callback,
+        )
         self.get_logger().info(f"Publishing image at {video_fps} fps")
 
-    def load_launch_parameters(self) -> None:
+    def load_launch_parameters(
+        self,
+    ) -> None:
         """Load the launch ROS parameters."""
-        self.declare_parameter("image_topic_name", value="/simulated_cam/image_raw")
-        self.declare_parameter("info_topic_name", value="/simulated_cam/camera_info")
-        self.declare_parameter("file_name", value="simulated_cam.mp4")
+        self.declare_parameter(
+            "image_topic_name",
+            value="/simulated_cam/image_raw",
+        )
+        self.declare_parameter(
+            "info_topic_name",
+            value="/simulated_cam/camera_info",
+        )
+        self.declare_parameter(
+            "file_name",
+            value="simulated_cam.mp4",
+        )
         # self.declare_parameter('config_file_path', value='')
         self.declare_parameter("loop", value=True)
         self.declare_parameter("frame_id", value="")
@@ -69,20 +100,17 @@ class VideoStreamerNode(Node):
         self.info_topic_name = (
             self.get_parameter("info_topic_name").get_parameter_value().string_value
         )
-        self.file_name = (
-            self.get_parameter("file_name").get_parameter_value().string_value
-        )
+        self.file_name = self.get_parameter("file_name").get_parameter_value().string_value
         # self.config_file_path = self.get_parameter('config_file_path')\
         #     .get_parameter_value().string_value
         self.loop = self.get_parameter("loop").get_parameter_value().bool_value
-        self.frame_id_ = (
-            self.get_parameter("frame_id").get_parameter_value().string_value
-        )
+        self.frame_id_ = self.get_parameter("frame_id").get_parameter_value().string_value
         self.type = self.get_parameter("type").get_parameter_value().string_value
         self.start = self.get_parameter("start").get_parameter_value().integer_value
 
         self.path = os.path.join(
-            get_package_share_directory("ros2_video_streamer"), self.file_name
+            get_package_share_directory("ros2_video_streamer"),
+            self.file_name,
         )
 
     # def load_config_file(self, file_path: str):
@@ -123,8 +151,14 @@ class VideoStreamerNode(Node):
                 self.destroy_node()
                 exit()
             elif not rval and self.loop:
-                self.vc.set(cv2.CAP_PROP_POS_MSEC, 0)
-                rval, image = self.vc.read()
+                self.vc.set(
+                    cv2.CAP_PROP_POS_MSEC,
+                    0,
+                )
+                (
+                    rval,
+                    image,
+                ) = self.vc.read()
         elif self.type == "image":
             image = self.image
         else:
