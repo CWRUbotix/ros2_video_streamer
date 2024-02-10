@@ -2,21 +2,14 @@ import os
 
 import cv2
 import rclpy
-from ament_index_python.packages import (
-    get_package_share_directory,
-)
+from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Time
 from cv2 import VideoCapture
 from cv2.typing import MatLike
 from cv_bridge import CvBridge
 from rclpy.node import Node
-from rclpy.qos import (
-    qos_profile_system_default,
-)
-from sensor_msgs.msg import (
-    CameraInfo,
-    Image,
-)
+from rclpy.qos import qos_profile_system_default
+from sensor_msgs.msg import CameraInfo, Image
 
 
 class VideoStreamerNode(Node):
