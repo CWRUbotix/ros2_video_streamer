@@ -17,7 +17,7 @@ def test_mypy() -> None:
         "..",
         "..",
         "..",
-        ".mypy.ini",
+        "pyproject.toml",
     )
     if not os.path.exists(config_file):
         config_file = os.path.join(file_path, "..", ".mypy.ini")
