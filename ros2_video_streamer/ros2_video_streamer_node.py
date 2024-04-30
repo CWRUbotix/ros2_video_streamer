@@ -8,7 +8,7 @@ from cv2 import VideoCapture
 from cv2.typing import MatLike
 from cv_bridge import CvBridge
 from rclpy.node import Node
-from rclpy.qos import qos_profile_system_default
+from rclpy.qos import QoSPresetProfiles
 from sensor_msgs.msg import CameraInfo, Image
 
 
@@ -35,12 +35,12 @@ class VideoStreamerNode(Node):
         self.image_publisher_ = self.create_publisher(
             Image,
             self.image_topic_name,
-            qos_profile_system_default,
+            QoSPresetProfiles.DEFAULT.value,
         )
         self.camera_info_publisher_ = self.create_publisher(
             CameraInfo,
             self.info_topic_name,
-            qos_profile_system_default,
+            QoSPresetProfiles.DEFAULT.value,
         )
 
         if not os.path.isfile(self.path):
