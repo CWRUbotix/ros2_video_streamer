@@ -1,8 +1,8 @@
 import os
 
+from ament_index_python.packages import get_package_share_directory
 import cv2
 import rclpy
-from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Time
 from cv2 import VideoCapture
 from cv_bridge import CvBridge

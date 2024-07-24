@@ -6,6 +6,7 @@ from launch.launch_description import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+
 def generate_launch_description() -> LaunchDescription:
     """Launch streamer node with description from launch_setup."""
     # Using OpaqueFunction lets us access the launch context to evaluate
