@@ -6,9 +6,13 @@ from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Time
 from cv2 import VideoCapture
 from cv_bridge import CvBridge
+from numpy.typing import NDArray
+from numpy import generic
 from rclpy.node import Node
 from rclpy.qos import QoSPresetProfiles
 from sensor_msgs.msg import CameraInfo, Image
+
+Matlike = NDArray[generic]
 
 
 class VideoStreamerNode(Node):
@@ -165,7 +169,7 @@ class VideoStreamerNode(Node):
 
         self.image_publisher_.publish(img_msg)
 
-    def get_image_msg(self, image, time: Time) -> Image:
+    def get_image_msg(self, image: Matlike, time: Time) -> Image:
         """
         Convert cv2 image to ROS2 Image with CvBridge cv2 -> image msg.
 
