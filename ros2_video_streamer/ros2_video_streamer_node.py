@@ -2,12 +2,12 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 import cv2
-import rclpy
 from builtin_interfaces.msg import Time
+import rclpy
 from cv2 import VideoCapture
 from cv_bridge import CvBridge
-from numpy.typing import NDArray
 from numpy import generic
+from numpy.typing import NDArray
 from rclpy.node import Node
 from rclpy.qos import QoSPresetProfiles
 from sensor_msgs.msg import CameraInfo, Image

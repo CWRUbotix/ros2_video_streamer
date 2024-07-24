@@ -13,9 +13,9 @@ def generate_launch_description() -> launch.launch_description.LaunchDescription
 
     You'll need `bottom_cam.mp4`, `front_cam.mp4`, & `manip_cam.mp4` in `ros2_video_streamer`.
     """
-    front_cam_launcher: IncludeLaunchDescription = create_cam_launcher('front')
-    manip_cam_launcher: IncludeLaunchDescription = create_cam_launcher('manip')
-    bottom_cam_launcher: IncludeLaunchDescription = create_cam_launcher('bottom')
+    front_cam_launcher = create_cam_launcher('front')
+    manip_cam_launcher = create_cam_launcher('manip')
+    bottom_cam_launcher = create_cam_launcher('bottom')
 
     return launch.launch_description.LaunchDescription(
         [

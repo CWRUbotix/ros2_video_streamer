@@ -74,7 +74,7 @@ def launch_setup(
         ),
     ]
 
-    streamer_node: Node = Node(
+    streamer_node = Node(
         package='ros2_video_streamer',
         executable='ros2_video_streamer_node',
         name='streamer_node',
