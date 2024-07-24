@@ -16,7 +16,8 @@ def test_mypy() -> None:
         '..',
         'pyproject.toml',
     )
-    if not os.path.exists(config_file):
-        config_file = os.path.join(file_path, '..', '.mypy.ini')
-    error_code = main(argv=['--config', config_file])
+    if os.path.exists(config_file):
+        error_code = main(argv=['--config', config_file])
+    else:
+        error_code = main()
     assert error_code == 0, 'Found code style errors / warnings'
