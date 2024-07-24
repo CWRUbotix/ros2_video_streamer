@@ -1,7 +1,7 @@
 import os
 
-import pytest
 from ament_mypy.main import main
+import pytest
 
 
 @pytest.mark.mypy

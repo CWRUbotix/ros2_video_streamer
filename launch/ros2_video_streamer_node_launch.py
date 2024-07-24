@@ -1,12 +1,10 @@
-from typing import Any, Dict, Tuple
-
-from launch_ros.actions import Node
+from typing import Any
 
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.launch_context import LaunchContext
 from launch.launch_description import LaunchDescription
 from launch.substitutions import LaunchConfiguration
-
+from launch_ros.actions import Node
 
 def generate_launch_description() -> LaunchDescription:
     """Launch streamer node with description from launch_setup."""
@@ -18,8 +16,8 @@ def generate_launch_description() -> LaunchDescription:
 # TODO remove args and kwargs?
 def launch_setup(
     context: LaunchContext,
-    *args: Tuple[Any],
-    **kwargs: Dict[Any, Any],
+    *args: tuple[Any],
+    **kwargs: dict[Any, Any],
 ) -> LaunchDescription:
     """Generate array to be included in launch description."""
     # Declare and early evaluate camera_name argument
